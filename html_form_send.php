@@ -1,80 +1,64 @@
 <?php
-if(isset($_POST['email'])) {
-     
-    // CHANGE THE TWO LINES BELOW
-    $email_to = "kleanx@gmail.com";
-     
-    $email_subject = "website html form submissions";
-     
-     
-    function died($error) {
-        // your error code can go here
-        echo "We are very sorry, but there were error(s) found with the form you submitted. ";
-        echo "These errors appear below.<br /><br />";
-        echo $error."<br /><br />";
-        echo "Please go back and fix these errors.<br /><br />";
-        die();
-    }
-     
-    // validation expected data exists
-    if(!isset($_POST['first_name']) ||
-        !isset($_POST['last_name']) ||
-        !isset($_POST['email']) ||
-        !isset($_POST['telephone']) ||
-        !isset($_POST['comments'])) {
-        died('We are sorry, but there appears to be a problem with the form you submitted.');       
-    }
-     
-    $first_name = $_POST['first_name']; // required
-    $last_name = $_POST['last_name']; // required
-    $email_from = $_POST['email']; // required
-    $telephone = $_POST['telephone']; // not required
-    $comments = $_POST['comments']; // required
-     
-    $error_message = "";
-    $email_exp = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
-  if(!preg_match($email_exp,$email_from)) {
-    $error_message .= 'The Email Address you entered does not appear to be valid.<br />';
-  }
-    $string_exp = "/^[A-Za-z .'-]+$/";
-  if(!preg_match($string_exp,$first_name)) {
-    $error_message .= 'The First Name you entered does not appear to be valid.<br />';
-  }
-  if(!preg_match($string_exp,$last_name)) {
-    $error_message .= 'The Last Name you entered does not appear to be valid.<br />';
-  }
-  if(strlen($comments) < 2) {
-    $error_message .= 'The Comments you entered do not appear to be valid.<br />';
-  }
-  if(strlen($error_message) > 0) {
-    died($error_message);
-  }
-    $email_message = "Form details below.\n\n";
-     
-    function clean_string($string) {
-      $bad = array("content-type","bcc:","to:","cc:","href");
-      return str_replace($bad,"",$string);
-    }
-     
-    $email_message .= "First Name: ".clean_string($first_name)."\n";
-    $email_message .= "Last Name: ".clean_string($last_name)."\n";
-    $email_message .= "Email: ".clean_string($email_from)."\n";
-    $email_message .= "Telephone: ".clean_string($telephone)."\n";
-    $email_message .= "Comments: ".clean_string($comments)."\n";
-     
-     
-// create email headers
-$headers = 'From: '.$email_from."\r\n".
-'Reply-To: '.$email_from."\r\n" .
-'X-Mailer: PHP/' . phpversion();
-@mail($email_to, $email_subject, $email_message, $headers);  
-?>
- 
-<!-- place your own success html below -->
- 
-Thank you for contacting us. We will be in touch with you very soon.
- 
-<?php
+if(isset($_POST["submit"])) {
+$recipient = "kleanx@gmail.com"; //my email
+echo $subject = 'Email message from Point Plumbing';
+echo $name = $_POST ["yourName"];
+echo $email = $_POST["yourEmail"];
+echo $phone = $_POST["yourPhone"];
+echo $location = $_POST["yourLocate"];
+echo  $message = $_POST["yourMessage"];
+
+ $mailBody="Name: $name\nEmail: $email\n\n$message"; 
+
+ mail($recipient, $subject, $mailBody, "From: $name <$email>");
+
+echo $thankYou="<p>Thank you! We will be in contact with you shortly.</p>";
+
 }
-die();
 ?>
+<form action="" method="post" id="spaceing" data-abide>
+        <div class="form-bg">
+            <div class="row">
+                <div id="name" class="large-6 medium-6 small-12 columns">
+                    <label> <h5>Name</h5>
+                        <input type="text" name="yourName" placeholder="What is you're name?"></input>
+                    </label>
+                </div>
+
+                <div id="email" class="large-6 medium-6 small-12 columns">
+                    <label><h5>Email</h5>
+                        <input type="email" name="yourEmail" placeholder="Please enter in you're email."required></input>
+                    </label>
+                    <small class="error">An email Address is required.</small>
+                </div>
+            </div>
+
+                <div class="row">
+                    <div id="phone"class="large-6 medium-6 small-12 columns">
+                        <label><h5>Phone</h5>
+                            <input type="text" name="yourPhone" placeholder="Please enter you're phone number."></input>
+                        </label>
+                    </div>
+
+                    <div id="location" class="large-6 medium-6 small-12 columns">
+                        <label><h5>Location</h5>
+                            <input type="text" name="yourLocate" placeholder="Where on Oahu are you currently living?"></input>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="message-area" class="large-12 medium-12 small-12 columns">
+                        <label><h5>Message</h5>
+                            <textarea id="message" name="yourMessage" placeholder="Please tell us about you're plumbing issues."></textarea>
+                        </label>
+                    </div>
+                </div>
+
+            <div class="row">
+                <div id="submit" class="large-3 medium-3 small-3 columns">
+                    <button name="submit" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
